@@ -5,7 +5,12 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 
 import SelectInput from 'react-native-select-input-ios';
@@ -22,8 +27,8 @@ function Register(props) {
 
   const selectOptions1 = []
 
-  for (let i=1980; i<=2020; i++) {
-      selectOptions1.push({ value: (''+i), label: (''+i)})
+  for (let i = 1980; i <= 2020; i++) {
+    selectOptions1.push({ value: ('' + i), label: ('' + i) })
   }
 
   const [selectOption, setSelectOption] = useState('Male')
@@ -47,7 +52,7 @@ function Register(props) {
       alert("You have to input your information correctly!")
     } else {
       setSignLoading(true)
-      fetch('http://8284d74e6474.ngrok.io/adduser/', {
+      fetch('http://3dc37ec44ae6.ngrok.io/adduser/', {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -58,8 +63,7 @@ function Register(props) {
         .then(response => {
           setSignLoading(false)
           if (response.success == "true") {
-
-            alert("Congratulations!  Your successful Registered!")
+            Alert.alert("Congratulations!  Successful Registered!")
             setSignName('');
             setSignPassword('');
             setSignAge('');
@@ -77,88 +81,93 @@ function Register(props) {
 
 
   return (
-    <View style={styles.container}>
-      <Logo />
-      <View style={styles.registerContainer}>
-        <View style={styles.itemcontainer}>
-          <Icon
-            style={styles.imgIcon} name="email" size={20} color='#000'
-          />
-          <TextInput style={styles.inputBox}
-            underlineColorAndroid='rgba(0,0,0,0)'
-            placeholder="Email"
-            placeholderTextColor="#ffffff"
-            keyboardType="email-address"
-            onSubmitEditing={() => this.password.focus()}
-            returnKeyLabel={"next"}
-            onChangeText={(text) => setSignEmail(text)}
-          />
-        </View>
-        <View style={styles.itemcontainer}>
-          <Icon
-            style={styles.imgIcon} name="keyboard" size={20} color='#000'
-          />
-          <TextInput style={styles.inputBox}
-            underlineColorAndroid='rgba(0,0,0,0)'
-            placeholder="Password"
-            placeholderTextColor="#ffffff"
-            ref={(input) => this.password = input}
-            returnKeyLabel={"next"}
-            onChangeText={(text) => setSignPassword(text)}
-          />
-        </View>
-        <View style={styles.itemcontainer}>
-          <Icon
-            style={styles.imgIcon} name="person" size={20} color='#000'
-          />
-          <TextInput style={styles.inputBox}
-            underlineColorAndroid='rgba(0,0,0,0)'
-            placeholder="Name"
-            placeholderTextColor="#ffffff"
-            returnKeyLabel={"next"}
-            onChangeText={(text) => setSignName(text)}
-          />
-        </View>
-        <View style={styles.itemcontainer}>
-          <Icon
-            style={styles.imgIcon} name="face" size={20} color='#000'
-          />
-          <View style={styles.selectBoxContainer}>
-            <SelectInput
-              value={selectOption1}
-              options={selectOptions1}
-              onSubmitEditing={(value) => setSelectOption1(value)}
-              style={styles.selectInput}
-            />
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : height} style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <Logo />
+          <View style={styles.registerContainer}>
+            <View style={styles.itemcontainer}>
+              <Icon
+                style={styles.imgIcon} name="email" size={20} color='#000'
+              />
+              <TextInput style={styles.inputBox}
+                underlineColorAndroid='rgba(0,0,0,0)'
+                placeholder="Email"
+                placeholderTextColor="#ffffff"
+                keyboardType="email-address"
+                onSubmitEditing={() => this.password.focus()}
+                returnKeyLabel={"next"}
+                onChangeText={(text) => setSignEmail(text)}
+              />
+            </View>
+            <View style={styles.itemcontainer}>
+              <Icon
+                style={styles.imgIcon} name="keyboard" size={20} color='#000'
+              />
+              <TextInput style={styles.inputBox}
+                underlineColorAndroid='rgba(0,0,0,0)'
+                placeholder="Password"
+                placeholderTextColor="#ffffff"
+                ref={(input) => this.password = input}
+                returnKeyLabel={"next"}
+                onChangeText={(text) => setSignPassword(text)}
+              />
+            </View>
+            <View style={styles.itemcontainer}>
+              <Icon
+                style={styles.imgIcon} name="person" size={20} color='#000'
+              />
+              <TextInput style={styles.inputBox}
+                underlineColorAndroid='rgba(0,0,0,0)'
+                placeholder="Name"
+                placeholderTextColor="#ffffff"
+                returnKeyLabel={"next"}
+                onChangeText={(text) => setSignName(text)}
+              />
+            </View>
+            <View style={styles.selectItemcontainer}>
+              <Icon
+                style={styles.imgIcon} name="face" size={20} color='#000'
+              />
+              <View style={styles.selectBoxContainer}>
+                <SelectInput
+                  value={selectOption1}
+                  options={selectOptions1}
+                  onSubmitEditing={(value) => setSelectOption1(value)}
+                  style={styles.selectInput}
+                />
+              </View>
+            </View>
+            <View style={styles.selectItemcontainer}>
+              <Icon
+                style={styles.imgIcon} name="group" size={20} color='#000'
+              />
+              <View style={styles.selectBoxContainer}>
+                <SelectInput
+                  value={selectOption}
+                  options={selectOptions}
+                  onSubmitEditing={(value) => setSelectOption(value)}
+                  style={styles.selectInput}
+                />
+              </View>
+            </View>
+            {signLoading == true ? <ActivityIndicator size="large" color="#00ff00" />
+              : <TouchableOpacity style={styles.button}
+                onPress={() => _handleFormSubmit()}>
+                <Text style={styles.buttonText}>SignUp</Text>
+              </TouchableOpacity>
+            }
           </View>
         </View>
-        <View style={styles.itemcontainer}>
-          <Icon
-            style={styles.imgIcon} name="group" size={20} color='#000'
-          />
-          <View style={styles.selectBoxContainer}>
-            <SelectInput
-              value={selectOption}
-              options={selectOptions}
-              onSubmitEditing={(value) => setSelectOption(value)}
-              style={styles.selectInput}
-            />
-          </View>
-        </View>
-        {signLoading == true ? <ActivityIndicator size="large" color="#00ff00" />
-          : <TouchableOpacity style={styles.button}
-            onPress={() => _handleFormSubmit()}>
-            <Text style={styles.buttonText}>SignUp</Text>
-          </TouchableOpacity>
-        }
-      </View>
-    </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#546e7a',
+    backgroundColor: '#585858',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
@@ -204,7 +213,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: '#1c313a',
+    backgroundColor: 'rgba(255,255,255,0.2)',
     width: 300,
     borderRadius: 25,
     marginVertical: 20,
@@ -221,6 +230,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  selectItemcontainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10
   },
   imgIcon: {
     padding: 10

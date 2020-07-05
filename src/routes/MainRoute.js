@@ -33,7 +33,7 @@ function App() {
           options={{
             headerTitle: '',
             headerStyle: {
-              backgroundColor: 'white'
+              backgroundColor: '#585858'
             },
             // headerLeft: () => (
             //   <Button

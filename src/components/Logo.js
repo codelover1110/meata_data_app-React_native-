@@ -9,13 +9,15 @@ import {
 function Logo() {
   return (
     <View style={styles.container}>
-      {/* <Image
+      <Image
         style={styles.logoImage}
         source={require('../assets/images/logo.png')}
-      /> */}
-      <Text style={styles.logoText}>
-        ShopVote
+      />
+      <View style={styles.textContainer}>
+        <Text style={styles.logoText}>
+          LIGHTUS
       </Text>
+      </View>
     </View>
   );
 }
@@ -30,12 +32,21 @@ const styles = StyleSheet.create({
   },
   logoText: {
     marginVertical: 15,
-    fontSize: 25,
-    color: 'rgba(255, 255, 255, 0.7)'
+    fontSize: 50,
+    letterSpacing: 2,
+    color: 'rgba(0, 0, 0, 0.7)',
+
   },
   logoImage: {
     width: 100,
-    height: 100
+    height: 130
+  },
+  textContainer: {
+    // width: 300,
+    borderWidth: 3,
+    color: 'rgba(0, 0, 0, 0.7)',
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
   }
 
 });

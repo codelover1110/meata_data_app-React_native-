@@ -6,6 +6,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 
 
@@ -42,7 +46,7 @@ function Login(props) {
       setShowLoading(true);
       // props.navigation.navigate('Shopvote')
 
-      let api_url = 'http://8284d74e6474.ngrok.io/getuser/' + userEmail + '/' + userPassword;
+      let api_url = 'http://3dc37ec44ae6.ngrok.io/getuser/' + userEmail + '/' + userPassword;
       return fetch(api_url)
         .then((response) => response.json())
         .then((responseJson) => {
@@ -75,60 +79,67 @@ function Login(props) {
   }
 
   return (
-    <View style={styles.container}>
-      <Logo />
-      <View style={styles.signupContainer}>
-        <View style={styles.itemcontainer}>
-          <Icon
-            style={styles.imgIcon} name="email" size={20} color='#000'
-          />
-          <TextInput style={styles.inputBox}
-            placeholder="Email"
-            placeholderTextColor="#ffffff"
-            selectionColor='#fff'
-            keyboardType="email-address"
-            returnKeyLabel={"next"}
-            onChangeText={(text) => setUserEmail(text)}
-          />
-        </View>
-        <View style={styles.itemcontainer}>
-          <Icon
-            style={styles.imgIcon} name="keyboard" size={20} color='#000'
-          />
-          <TextInput style={styles.inputBox}
-            underlineColorAndroid='rgba(0,0,0,0)'
-            placeholder="Password"
-            secureTextEntry={true}
-            placeholderTextColor="#ffffff"
-            // ref={(input) => this.password = input}
-            returnKeyLabel={"next"}
-            onChangeText={(text) => setUserPassword(text)}
-          />
-        </View>
-        <View style={styles.itemcontainer}>
-          <CheckBox
-            onClick={() => {
-              setSelection(!isSelected)
-            }}
-            isChecked={isSelected}
-          />
-          <Text> Forbliv logged ind</Text>
-        </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : height} style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View>
+          <Logo />
+          <View style={styles.signupContainer}>
+            <View style={styles.itemcontainer}>
+              <Icon
+                style={styles.imgIcon} name="email" size={20} color='#000'
+              />
+              <TextInput style={styles.inputBox}
+                placeholder="Email"
+                placeholderTextColor="#ffffff"
+                selectionColor='#fff'
+                keyboardType="email-address"
+                returnKeyLabel={"next"}
+                onChangeText={(text) => setUserEmail(text)}
+                autoCapitalize="none"
+              />
+            </View>
+            <View style={styles.itemcontainer}>
+              <Icon
+                style={styles.imgIcon} name="keyboard" size={20} color='#000'
+              />
+              <TextInput style={styles.inputBox}
+                underlineColorAndroid='rgba(0,0,0,0)'
+                placeholder="Password"
+                secureTextEntry={true}
+                placeholderTextColor="#ffffff"
+                // ref={(input) => this.password = input}
+                returnKeyLabel={"next"}
+                onChangeText={(text) => setUserPassword(text)}
+              />
+            </View>
+            <View style={styles.itemcontainer}>
+              <CheckBox
+                onClick={() => {
+                  setSelection(!isSelected)
+                }}
+                isChecked={isSelected}
+              />
+              <Text> Forbliv logged ind</Text>
+            </View>
 
-        {showLoading == true ? <ActivityIndicator size="large" color="#00ff00" />
-          : <TouchableOpacity style={styles.button}
-            onPress={this._handlePress}>
-            <Text style={styles.buttonText}>SignIn</Text>
-          </TouchableOpacity>
-        }
-      </View>
-    </View>
+            {showLoading == true ? <ActivityIndicator size="large" color="#00ff00" />
+              : <TouchableOpacity style={styles.button}
+                onPress={this._handlePress}>
+                <Text style={styles.buttonText}>SignIn</Text>
+              </TouchableOpacity>
+            }
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#546e7a',
+    backgroundColor: '#585858',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
@@ -151,7 +162,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: '#1c313a',
+    backgroundColor: 'rgba(255,255,255,0.2)',
     width: 300,
     borderRadius: 15,
     marginVertical: 10,

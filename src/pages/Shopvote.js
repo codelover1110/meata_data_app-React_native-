@@ -41,7 +41,10 @@ export default function ShopScreen({ navigation }) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <Button onPress={() => _handleLogout()} title="Logout" />
+        <View style={styles.backButton}>
+          {/* <Button onPress={() => _handleLogout()} title="Tilbage til Kort"  fontColor={'red'} /> */}
+          <Text onPress={() => _handleLogout()} style={{color: 'white'}} >Tilbage til Kort</Text>
+        </View>
       ),
     });
   }, [navigation]);
@@ -69,11 +72,11 @@ export default function ShopScreen({ navigation }) {
   _cleanSuccess = (shop_ID) => {
     NfcManager.cancelTechnologyRequest().catch(() => 0);
     // setConnectNfc(false);
-    let api_url = 'http://8284d74e6474.ngrok.io/customershopdata/' + shop_ID;
+    let api_url = 'http://3dc37ec44ae6.ngrok.io/customershopdata/' + shop_ID;
     return fetch(api_url)
       .then((response) => response.json())
       .then((responseJson) => {
-        let shopUrl = 'http://8284d74e6474.ngrok.io/media/' + responseJson.store_picture
+        let shopUrl = 'http://3dc37ec44ae6.ngrok.io/media/' + responseJson.store_picture
         setShopImage({ uri: shopUrl })
         setLatitude(responseJson.latitude)
         setLongtitude(responseJson.longtitude)
@@ -160,20 +163,12 @@ export default function ShopScreen({ navigation }) {
     formData.append("availabilityStatus", availabilityStatus)
     formData.append("selectionStatus", selectionStatus)
     formData.append("shopName", shopName)
-    // formData.append("shopID", shopID)
+    formData.append("nfc_store_id", shopID)
     formData.append("longtitude", longtitude)
     formData.append("latitude", latitude)
 
-    console.log(serviceStatus)
-    console.log(availabilityStatus)
-    console.log(selectionStatus)
-    console.log(customerID)
-    console.log(shopName)
-    console.log(shopID)
 
-    console.log(formData)
-
-    fetch('http://8284d74e6474.ngrok.io/manageVoteData/', {
+    fetch('http://3dc37ec44ae6.ngrok.io/manageVoteData/', {
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -184,9 +179,11 @@ export default function ShopScreen({ navigation }) {
       .then(response => {
         if (response.success == "true") {
           setSubmitStatus(false)
-          alert("Congratulations!  Your successful voted!")
+          Alert.alert("Congratulations!", "Your successful voted!")
+
         } else {
           alert("Vote error")
+          setSubmitStatus(false)
         }
       }).catch(err => {
         console.log(err)
@@ -243,16 +240,19 @@ export default function ShopScreen({ navigation }) {
             source={shopImage} />
         }
 
-        {connectNfc == false ? <Text style={styles.logoText}>{shopName}</Text>
-          : <Text style={styles.logoText}>Denmark Big Shop</Text>
+        {connectNfc == false ? <Text style={styles.shopNameText}>{shopName}</Text>
+          : <View style={styles.textContainer}>
+            <Text style={styles.logoText}>
+              LIGHTUS
+        </Text></View>
         }
 
       </View>
       <View style={[connectNfc == false ? styles.showVoteButtons : styles.hiddenVoteButtons]}>
         <View style={{ paddingBottom: 30 }}>
-          <Text
+          {/* <Text
             style={{ height: 50, borderColor: 'gray', borderWidth: 2, width: 300, textAlign: "center" }}
-          >{shopName} is a shoping centre located on latitude: {latitude}, longtitude: {longtitude}</Text>
+          >{shopName} is a shoping centre located on latitude: {latitude}, longtitude: {longtitude}</Text> */}
         </View>
       </View>
       <View style={[connectNfc == false ? styles.showVoteButtons : styles.hiddenVoteButtons]}>
@@ -348,16 +348,16 @@ export default function ShopScreen({ navigation }) {
         </View>
       </View>
       <View style={[connectNfc == false ? styles.button : styles.hiddenVoteButtons]}>
-      {submitStatus == true ? <ActivityIndicator size="large" color="#00ff00" />
-        : <TouchableOpacity 
-          onPress={() => this._handleFormSubmit()}
-        >
-          <Text style={styles.buttonText}>Send</Text>
-        </TouchableOpacity>}
+        {submitStatus == true ? <ActivityIndicator size="large" color="#00ff00" />
+          : <TouchableOpacity
+            onPress={() => this._handleFormSubmit()} style={styles.votesendButton}
+          >
+            <Text style={styles.buttonText}>Send</Text>
+          </TouchableOpacity>}
       </View>
 
       {conntectStatus == true ? <ActivityIndicator size="large" color="#00ff00" />
-        : <TouchableOpacity style={[connectNfc == false ? styles.hiddenVoteButtons : styles.button]}
+        : <TouchableOpacity style={[connectNfc == false ? styles.hiddenVoteButtons : styles.nfctagButton]}
           onPress={() => this._connectNfctag()}
         >
           <Text style={styles.buttonText}>Connect Nfctag</Text>
@@ -372,9 +372,9 @@ export default function ShopScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#585858',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white'
   },
 
   buttonGroup: {
@@ -383,35 +383,62 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
 
-  logoText: {
+  shopNameText: {
     marginVertical: 30,
     fontSize: 25,
     color: 'rgba(0, 0, 0, 0.7)',
     textAlign: "center"
+  },
+  logoText: {
+    marginVertical: 15,
+    fontSize: 50,
+    letterSpacing: 2,
+    color: 'rgba(0, 0, 0, 0.7)',
+
   },
 
   buttonTitle: {
     marginVertical: 15,
     fontSize: 18,
     fontWeight: '500',
-    color: 'rgba(0, 0, 0, 0.7)',
     paddingRight: 10,
     width: 100,
-    textAlign: "center"
+    textAlign: "center",
+    color: "white"
   },
 
   logoContainer: {
     // flexGrow: 1,
     justifyContent: 'flex-end',
-    alignItems: "center"
+    alignItems: "center",
+
   },
 
   button: {
-    backgroundColor: '#536dfe',
+    backgroundColor: '#585858',
     width: 300,
     borderRadius: 25,
     marginVertical: 20,
     paddingVertical: 10
+  },
+  nfctagButton: {
+    // flexGrow: 1,
+
+    backgroundColor: '#585858',
+    width: 300,
+    borderRadius: 25,
+    marginVertical: 150,
+    paddingVertical: 10,
+    borderWidth: 2,
+    borderColor: '#000000'
+  },
+
+  votesendButton: {
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: '#000000',
+    paddingVertical: 10,
+
   },
 
   badButton: {
@@ -452,6 +479,25 @@ const styles = StyleSheet.create({
   },
   hiddenVoteButtons: {
     display: 'none'
+  },
+  textContainer: {
+    // width: 300,
+    borderWidth: 3,
+    color: 'rgba(0, 0, 0, 0.7)',
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
+  },
+  backButton: {
+    borderWidth: 2,
+    borderColor: '#000000',
+    // fontSize: 12
+    // fontColor: '#ffffff',
+    // color: '#ffffff',
+    borderRadius: 20,
+    marginLeft: 20,
+    padding: 5
+
+
   }
 
 });
