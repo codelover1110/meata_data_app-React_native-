@@ -33,7 +33,7 @@ function Login(props) {
     AsyncStorage.getItem('check_status').then(value => {
       setLogined(value)
       if (value == 'true') {
-        props.navigation.navigate('Shopvote')
+        props.navigation.navigate('Home')
       }
     });
   });
@@ -46,7 +46,7 @@ function Login(props) {
       setShowLoading(true);
       // props.navigation.navigate('Shopvote')
 
-      let api_url = 'http://3dc37ec44ae6.ngrok.io/getuser/' + userEmail + '/' + userPassword;
+      let api_url = 'http://392f285c6f57.ngrok.io/getuser/' + userEmail + '/' + userPassword;
       return fetch(api_url)
         .then((response) => response.json())
         .then((responseJson) => {
@@ -58,7 +58,7 @@ function Login(props) {
                 AsyncStorage.setItem('check_status', 'true')
 
               }
-              props.navigation.navigate('Shopvote')
+              props.navigation.navigate('Home')
               setShowLoading(false)
 
             } else {
@@ -139,7 +139,7 @@ function Login(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#585858',
+    backgroundColor: '#548235',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'

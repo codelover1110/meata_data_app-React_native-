@@ -16,8 +16,7 @@ function MyTabs() {
       initialRouteName="Login"
       activeColor="white"
       inactiveColor="#ccc"
-      barStyle={{backgroundColor: '#585858'}}
-
+      barStyle={{backgroundColor: '#548235'}}
     >
       <Tab.Screen
         name="Login"

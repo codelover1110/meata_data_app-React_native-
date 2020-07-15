@@ -13,11 +13,6 @@ function Logo() {
         style={styles.logoImage}
         source={require('../assets/images/logo.png')}
       />
-      <View style={styles.textContainer}>
-        <Text style={styles.logoText}>
-          LIGHTUS
-      </Text>
-      </View>
     </View>
   );
 }
@@ -38,8 +33,8 @@ const styles = StyleSheet.create({
 
   },
   logoImage: {
-    width: 100,
-    height: 130
+    width: 200,
+    height: 200
   },
   textContainer: {
     // width: 300,

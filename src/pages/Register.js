@@ -52,7 +52,7 @@ function Register(props) {
       alert("You have to input your information correctly!")
     } else {
       setSignLoading(true)
-      fetch('http://3dc37ec44ae6.ngrok.io/adduser/', {
+      fetch('http://392f285c6f57.ngrok.io/adduser/', {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -167,7 +167,7 @@ function Register(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#585858',
+    backgroundColor: '#548235',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'

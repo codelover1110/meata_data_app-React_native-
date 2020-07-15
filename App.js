@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 
 import Routes from './src/routes/MainRoute';
-import Shopvote from './src/pages/Shopvote';
 
 function App() {
   return (
@@ -16,7 +15,6 @@ function App() {
         barStyle="light-content"
       />
       <Routes />
-      {/* <Shopvote /> */}
     </View>
   );
 }
